@@ -54,6 +54,10 @@ class Change {
         return map.toString()
     }
 
+    fun isEmpty(): Boolean {
+        return map.isEmpty()
+    }
+
     fun calculateMinimalChange(amount: Long): Change {
         var remainingAmount = amount
         val minimalChange = Change()
@@ -75,7 +79,7 @@ class Change {
 
         // If we cannot fully satisfy the amount, throw an exception
         if (remainingAmount > 0) {
-            throw IllegalArgumentException("Insufficient change available to provide the minimal change.")
+            throw CashRegister.TransactionException("Insufficient change available to provide the minimal change.")
         }
 
         return minimalChange
