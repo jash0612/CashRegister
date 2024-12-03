@@ -29,17 +29,20 @@ class CashRegister(private val change: Change) {
             }
         }
         else {
-            val changeToReturnAmount = amountPaid.total - totalPrice
+            if (change.isEmpty()) throw TransactionException("Empty cash register. No change available.")
+            else {
+                val changeToReturnAmount = amountPaid.total - totalPrice
 
-            return try {
-                // Calculate the minimal change
-                val changeToReturn = change.calculateMinimalChange(changeToReturnAmount)
-                deductFromCashRegister(changeToReturn)
-                addToCashRegister(amountPaid)
+                return try {
+                    // Calculate the minimal change
+                    val changeToReturn = change.calculateMinimalChange(changeToReturnAmount)
+                    deductFromCashRegister(changeToReturn)
+                    addToCashRegister(amountPaid)
 
-                changeToReturn
-            } catch (e: IllegalArgumentException) {
-                throw TransactionException("Unable to provide the required change.", e)
+                    changeToReturn
+                } catch (e: IllegalArgumentException) {
+                    throw TransactionException("Unable to provide the required change.", e)
+                }
             }
         }
     }
